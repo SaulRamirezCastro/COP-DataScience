@@ -13,8 +13,8 @@ class MetaData:
     def _get_metadata_event(self):
         pass
 
-    def _connect_dynamo(self):
+    def _write_dynamo(self):
         pass
 
-    def _write_dynamo(self):
+    def _dynamo_client(self):
         pass
