@@ -21,8 +21,7 @@ class Json:
 
     def _read_txt(self):
 
-        with open('resyt', w) as f_in:
-            data = csv.reader(self._raw, delimiter='')
+        data = csv.reader(self._raw, delimiter='')
 
         if data:
             self._raw = data
