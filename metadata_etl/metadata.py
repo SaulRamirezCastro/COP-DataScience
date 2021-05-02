@@ -5,16 +5,29 @@ Created by saul ramirez at 4/28/2021
 """
 
 import boto3
+import logging
+
+
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.INFO)
+
 
 class MetaData:
 
     _table = None       # type: str
     _dynamo = None      # type: boto3
 
-
-
     def __init__(self):
-        pass
+        logger.info("Class Metadata")
+
+    def _set_table(self):
+        """
+        """
+        table = 'Metadata'
+
+        if table:
+            self._table = table
 
     def _parse_event(self):
         """
@@ -59,14 +72,19 @@ class MetaData:
         """
 
         pass
-    def _get_metadata_event(self):
+
+    def _get_metadata(self):
         pass
 
     def _insert_meta(self):
         """"
         """
         table = self._dynamo.Table(self._table)
-        item = {}
+        item = { "checksum": "b27796808bcc86b938bc409ba54511e5",
+                "date":"201121",
+                "Id": "6",
+                "Name":"test",
+                "bucket":"test2"}
 
         response = table.put_item(Item=item)
         return response
