@@ -28,6 +28,7 @@ class Convert:
     _kwargs = None          # type: dict
     _delimiter = None       # type: str
     _target_bkt = None      # type: str
+    _key = None             # type: str
 
     def __init__(self, **kwargs):
         logger.info("Initialize Class Convert")
@@ -40,6 +41,16 @@ class Convert:
 
         if tmp:
             self._raw = tmp
+
+    def _set_key(self):
+        """
+        """
+
+        if self._prefix:
+            key = self._prefix.split('/')[-1]
+
+        if key:
+            self._key = key
 
     def _read_yaml_file(self) -> None:
         """Read the Yaml file configuration and set into the class variable
@@ -54,7 +65,12 @@ class Convert:
         if data:
             self._yaml_config = data
 
-    def _set_delimiter(self):
+    def _set_delimiter(self) -> None:
+        """Set delimiter values from yaml config
+
+        Return:
+             None
+        """
 
         if self._yaml_config.get('Delimiter'):
             self._delimiter = self._yaml_config.get('Delimiter')
@@ -93,7 +109,8 @@ class Convert:
         """"
         """
         tmp = tempfile.gettempdir()
-        file = f"{tmp}/tmp.csv.gz"
+        key = self._key.split('.')[0]
+        file = f"{tmp}/{key}.csv.gz"
         with gzip.open(file, 'wt') as file_out:
             for row in self._raw:
                 file_out.writelines(row)
