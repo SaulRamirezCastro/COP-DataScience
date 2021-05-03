@@ -3,9 +3,12 @@
 Created by saul ramirez at 4/28/2021
 
 """
+import json
 
 import boto3
 import logging
+import yaml
+from urllib.parse import unquote_plus
 
 
 logger = logging.getLogger(__name__)
@@ -17,76 +20,107 @@ class MetaData:
 
     _table = None       # type: str
     _dynamo = None      # type: boto3
+    _yaml_config = None # type: dict
+    _kwargs = None    # type: dict
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         logger.info("Class Metadata")
+        self._kwargs = kwargs
 
-    def _set_table(self):
+    def metadata(self):
+
+        self._set_kwargs()
+        self._read_yaml_file()
+        self._set_table()
+        self.dynamo_client
+        self._parse_event()
+        meta = self._get_metadata()
+        if meta:
+            self._insert_meta()
+            return self._meta
+        else:
+            return 0
+
+    def _set_kwargs(self):
+
+        if self._kwargs:
+            data = self._kwargs.get('event')
+
+        if data:
+            self._kwargs = data
+
+    def _read_yaml_file(self) -> None:
+        """Read the Yaml file configuration and set into the class variable
+        '_yaml_config'
+        Return:
+            None
         """
+        yaml_file = "config.yml"
+        with open(yaml_file) as f:
+            data = yaml.safe_load(f)
+
+        if data:
+            self._yaml_config = data
+
+    def _set_table(self) -> None:
+        """Set table value from yaml config file
+        Return:
+            None
         """
-        table = 'Metadata'
+        table = self._yaml_config.get('table')
 
         if table:
             self._table = table
 
-    def _parse_event(self):
-        """
-        {
-  "Records": [
-    {
-      "eventVersion": "2.0",
-      "eventSource": "aws:s3",
-      "awsRegion": "us-east-1",
-      "eventTime": "1970-01-01T00:00:00.000Z",
-      "eventName": "ObjectCreated:Put",
-      "userIdentity": {
-        "principalId": "EXAMPLE"
-      },
-      "requestParameters": {
-        "sourceIPAddress": "127.0.0.1"
-      },
-      "responseElements": {
-        "x-amz-request-id": "EXAMPLE123456789",
-        "x-amz-id-2": "EXAMPLE123/5678abcdefghijklambdaisawesome/mnopqrstuvwxyzABCDEFGH"
-      },
-      "s3": {
-        "s3SchemaVersion": "1.0",
-        "configurationId": "testConfigRule",
-        "bucket": {
-          "name": "example-bucket",
-          "ownerIdentity": {
-            "principalId": "EXAMPLE"
-          },
-          "arn": "arn:aws:s3:::example-bucket"
-        },
-        "object": {
-          "key": "test/key",
-          "size": 1024,
-          "eTag": "0123456789abcdef0123456789abcdef",
-          "sequencer": "0A1B2C3D4E5F678901"
-        }
-      }
-    }
-  ]
-}
+    def _parse_event(self) -> None:
+        """Parser the event(dict) and generate the meta data from the file
+        Return:
+            None
         """
 
-        pass
+        for record in self._kwargs['Records']:
+            checksum = record['s3']['object']['eTag']
+            bucket = record['s3']['bucket']['name']
+            key = unquote_plus(record['s3']['object']['key'])
+            event_time = record['eventTime']
 
-    def _get_metadata(self):
-        pass
+        meta = {
+            "Id": checksum,
+            "checksum": checksum,
+            "bucket":  bucket,
+            "key": key,
+            "time": event_time
+            }
+
+        if meta:
+            self._meta = meta
+
+    def _get_metadata(self) -> dict:
+        """get meta data from dynamo table
+
+        Return:
+            Item(dict): values from dynamo table
+        """
+
+        table = self._dynamo.Table(self._table)
+        key = {"Id": self._meta.get('Id'),
+               "checksum": self._meta.get('checksum')}
+        data = table.get_item(Key=key)
+
+        if data.get('Item'):
+            return data.get('Item')
+        else:
+            return None
 
     def _insert_meta(self):
-        """"
+        """"Insert Meta data in dynamodb table
+
+        Return:
+            response(dict):
         """
         table = self._dynamo.Table(self._table)
-        item = { "checksum": "b27796808bcc86b938bc409ba54511e5",
-                "date":"201121",
-                "Id": "6",
-                "Name":"test",
-                "bucket":"test2"}
 
-        response = table.put_item(Item=item)
+        response = table.put_item(Item=self._meta)
         return response
 
     @property
