@@ -1,0 +1,3 @@
+Delimiter: "|"
+target_bkt: aws-silver-bkt
+target_prefix: files/

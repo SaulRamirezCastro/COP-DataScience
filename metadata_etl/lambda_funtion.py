@@ -13,7 +13,4 @@ def lambda_handler(event, contex):
     if event:
         meta = MetaData(event=event)
 
-        if meta:
-            pass
-        else:
-            return meta
+    return meta
