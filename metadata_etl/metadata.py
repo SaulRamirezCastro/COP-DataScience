@@ -27,6 +27,10 @@ class MetaData:
         logger.info("Class Metadata")
         self._kwargs = kwargs
 
+    def json(self):
+
+        return json.dumps(self._meta)
+
     def metadata(self):
 
         self._set_kwargs()
@@ -37,9 +41,6 @@ class MetaData:
         meta = self._get_metadata()
         if meta:
             self._insert_meta()
-            return self._meta
-        else:
-            return 0
 
     def _set_kwargs(self):
 

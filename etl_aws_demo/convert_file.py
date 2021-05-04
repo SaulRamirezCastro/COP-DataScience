@@ -34,7 +34,26 @@ class Convert:
         logger.info("Initialize Class Convert")
         self._kwargs = kwargs
 
-    def _read_txt(self):
+    def convert_file(self):
+        """
+        """
+        self._set_prefix()
+        self._set_bucket()
+        self._set_key()
+        self._read_yaml_file()
+        self._set_delimiter()
+        self._set_bucket_target()
+        self._get_s3_file_body()
+        self._read_txt()
+        self._write_tmp_csv()
+        self._put_object_s3()
+        self._clear_tmp()
+
+    def _read_txt(self) -> None:
+        """Read file as csv
+        Return:
+            None
+        """
 
         data = csv.reader(self._raw, delimiter=self._delimiter)
         tmp = list(data)
@@ -42,8 +61,11 @@ class Convert:
         if tmp:
             self._raw = tmp
 
-    def _set_key(self):
-        """
+    def _set_key(self) -> None:
+        """Set the key from the prefix
+
+        Return:
+            None
         """
 
         if self._prefix:
@@ -98,7 +120,7 @@ class Convert:
         """
         try:
             key = self._path.split('/')[-1]
-            prefix = self._prefix.split('/')[:-2]
+            prefix = self._yaml_config.get('target_prefix')
             key = f"{prefix}/{key}"
             self._s3_client.upload_file(self._path, self._target_bkt, key)
 
