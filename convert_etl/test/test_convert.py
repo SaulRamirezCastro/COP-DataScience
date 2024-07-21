@@ -4,7 +4,7 @@ Created by saul ramirez at 5/2/2021
 
 """
 
-from etl_aws_demo.convert_file import Convert
+from convert_etl.convert_file import Convert
 
 def test_init_class():
     process = Convert(Prefix='files/CP_Mexico.txt', Bucket='aws-bronce-bkt')

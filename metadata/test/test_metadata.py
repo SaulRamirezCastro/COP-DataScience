@@ -4,7 +4,7 @@ Created by saul ramirez at 5/1/2021
 
 """
 
-from metadata_etl.metadata import MetaData
+from metadata.metadata import MetaData
 
 
 def test_init_class():
