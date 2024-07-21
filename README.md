@@ -38,8 +38,6 @@ Project to tack all the metadata files ingested in Aws S3, using Aws lambda func
 - Aws Dynamo
 
 ### TO DO:
-- [X] Create Aws Lambda to Convert csv file
-- [X] Create Aws Lambda to write the metadata into Dynamo
 - [ ] Add Aws Sqs as Message queue
 - [ ] Add Terraform to deploy the project.
  
