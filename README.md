@@ -8,10 +8,39 @@ Project to tack all the metadata files ingested in Aws S3, using Aws lambda func
 
 ![Alt text](diagram/COP-data.drawio.png?raw=true "Aws Diagram.")
 
+### Project Structure
+```txt
+.
+├── README.md
+├── convert_etl
+│         ├── config.yml
+│         ├── convert_file.py
+│         ├── lambda_funtion.py
+│         └── test
+│            └── test_convert.py
+├── deploy
+├── diagram
+│        └── COP-data.drawio.png
+└── metadata
+    ├── config.yml
+    ├── lambda_function.py
+    ├── metadata.py
+    └── test
+        └── test_metadata.py
+
+```
+
 ### Technologies
 
 - Aws S3
 - Aws Lambda(Python)
 - Aws SQS
 - Aws Dynamo
+
+### TO DO:
+-[X] Create Aws Lambda to Convert csv file
+-[X] Create Aws Lambda to write the metadata into Dynamo
+-[ ] Add Aws Sqs as Message queue
+-[ ] Add Terraform to deploy the project.
+ 
 
