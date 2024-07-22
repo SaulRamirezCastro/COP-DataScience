@@ -6,7 +6,7 @@ Project to tack all the metadata files ingested in Aws S3, using Aws lambda func
 
 ### Aws Diagram.
 
-![Alt text](diagram/COP-data.drawio.png?raw=true "Aws Diagram.")
+![Alt text](diagram/COP-data.drawio.png "Aws Diagram.")
 
 ### Project Structure
 ```bash
