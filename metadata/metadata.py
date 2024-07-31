@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """ 
-Created by saul ramirez at 4/28/2021
+Created by saul ramirez at 11/06/2024
 
 """
 import json
@@ -24,7 +24,7 @@ class MetaData:
     _kwargs = None    # type: dict
 
     def __init__(self, **kwargs):
-        logger.info("Class Metadata")
+        logger.info("Class to Persist Metadata")
         self._kwargs = kwargs
 
     def json(self):
@@ -126,7 +126,7 @@ class MetaData:
 
     @property
     def dynamo_client(self) -> None:
-        """Set dynamodb client from boto3+
+        """Set dynamodb client from boto3
 
         Return:
             None
