@@ -6,7 +6,7 @@ Project to tack all the metadata files ingested in Aws S3, using Aws lambda func
 
 ### Aws Diagram.
 
-![Alt text](diagram/COP-data.drawio.png "Aws Diagram.")
+![Alt text](diagram/Cop-metadata.png "Aws Diagram.")
 
 ### Project Structure
 ```bash
@@ -35,10 +35,11 @@ Project to tack all the metadata files ingested in Aws S3, using Aws lambda func
 - Aws S3
 - Aws Lambda(Python)
 - Aws SQS
-- Aws Dynamo
+- Aws Dynamodb
+- Aws SNS
 
 ### TO DO:
-- [ ] Add Aws Sqs as Message queue
+- [ ] Integrate Aws SNS with Aws SQS.
 - [ ] Add Terraform to deploy the project.
  
 
