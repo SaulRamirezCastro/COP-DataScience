@@ -1,0 +1,24 @@
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": [
+       "logs:CreateLogGroup",
+       "logs:CreateLogStream",
+       "logs:PutLogEvents",
+       "lambda:InvokeFunction",
+       "dynamodb:DescribeStream",
+       "dynamodb:GetRecords",
+       "dynamodb:GetShardIterator",
+       "dynamodb:ListStreams",
+       "dynamodb:PutItem",
+       "dynamodb:UpdateItem",
+       "sqs:ReceiveMessage",
+       "sqs:DeleteMessage",
+       "sqs:GetQueueAttributes"
+     ],
+     "Resource": "arn:aws:logs:*:*:*",
+     "Effect": "Allow"
+   }
+ ]
+}
