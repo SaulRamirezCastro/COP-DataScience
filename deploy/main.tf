@@ -63,3 +63,7 @@ resource "aws_sqs_queue" "sqs_cop_metadata" {
   max_message_size = 2048
 
 }
+
+resource "aws_sns_topic" "S3_event_topic" {
+  name = "S3_event_topic"
+}
